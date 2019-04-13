@@ -1,0 +1,23 @@
+.DS_Store
+
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.mvn/
+mvnw
+mvnw.cmd
+
+### IntelliJ IDEA ###
+.idea
+/**/.idea
+*.iws
+*.iml
+*.ipr
+config_build
