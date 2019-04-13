@@ -16,8 +16,14 @@ mvnw.cmd
 
 ### IntelliJ IDEA ###
 .idea
-/**/.idea
 *.iws
 *.iml
 *.ipr
 config_build
+
+##### setting for nested  project ######
+/**/.idea
+/**/target/
+/**/*.iml
+/**/*.iws
+/**/*.ipr
