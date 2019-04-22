@@ -4,11 +4,14 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.listener.AcknowledgingMessageListener;
 import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.Payload;
 
 public class ConsumerKafka implements AcknowledgingMessageListener<String, String> {
 
     @Override
-    @KafkaListener(id = "consumer", topics = {"${kafka.topic}"} )
+    @KafkaListener(id = "consumer-1", topics = {"${kafka.topic}"} )
     public void onMessage(ConsumerRecord<String, String> data,
             Acknowledgment acknowledgment) {
         // TODO Auto-generated method stub
@@ -24,4 +27,17 @@ public class ConsumerKafka implements AcknowledgingMessageListener<String, Strin
             acknowledgment.acknowledge();
         }
     }
+
+    @KafkaListener(id = "consumer-2", topics = {"${kafka.topic}"} )
+    public void listen(String message) {
+        System.out.println("Received Messasge " + message);
+    }
+
+    @KafkaListener(id = "consumer-3", topics = {"${kafka.topic}"} )
+    public void listenWithHeaders(
+            @Payload String message,
+            @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) {
+        System.out.println("Received Message: " + message + " from partition: " + partition);
+    }
+
 }
