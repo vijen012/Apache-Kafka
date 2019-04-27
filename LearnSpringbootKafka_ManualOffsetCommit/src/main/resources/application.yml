@@ -13,6 +13,7 @@ auto.commit.interval.ms:  100
 group.id: group1
 kafka.auto.offset.reset: earliest
 kafka.topic: my-topic
+kafka.person.topic: person-topic
 
 ---
 spring:

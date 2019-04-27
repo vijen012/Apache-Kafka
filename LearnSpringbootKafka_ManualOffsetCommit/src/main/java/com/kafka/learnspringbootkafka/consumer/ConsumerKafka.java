@@ -1,5 +1,6 @@
 package com.kafka.learnspringbootkafka.consumer;
 
+import com.kafka.learnspringbootkafka.data.Person;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.listener.AcknowledgingMessageListener;
@@ -11,7 +12,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 public class ConsumerKafka implements AcknowledgingMessageListener<String, String> {
 
     @Override
-    @KafkaListener(id = "consumer-1", topics = {"${kafka.topic}"} )
+    @KafkaListener(id = "consumer-1", topics = {"${kafka.topic}"}, containerFactory = "kafkaListenerContainerFactory")
     public void onMessage(ConsumerRecord<String, String> data,
             Acknowledgment acknowledgment) {
         // TODO Auto-generated method stub
@@ -28,6 +29,15 @@ public class ConsumerKafka implements AcknowledgingMessageListener<String, Strin
         }
     }
 
+    @KafkaListener(id = "consumer-2", topics = {"${kafka.person.topic}"}, containerFactory = "personKafkaListenerContainerFactory" )
+    public void listenPersonData(
+            @Payload Person person,
+            @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition,
+            @Header(KafkaHeaders.TOPIC) String topic) {
+        System.out.println("Received Message: " + person + " from partition: " + partition);
+    }
+
+/*
     @KafkaListener(id = "consumer-2", topics = {"${kafka.topic}"} )
     public void listen(String message) {
         System.out.println("Received Messasge " + message);
@@ -39,5 +49,22 @@ public class ConsumerKafka implements AcknowledgingMessageListener<String, Strin
             @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) {
         System.out.println("Received Message: " + message + " from partition: " + partition);
     }
+
+  */
+
+
+//Consuming Messages from a Specific Partition
+/*    @KafkaListener(topicPartitions = @TopicPartition(topic = "topicName",
+                    partitionOffsets = {
+                            @PartitionOffset(partition = "0", initialOffset = "0"),
+                            @PartitionOffset(partition = "3", initialOffset = "0")
+                    }))
+    public void listenToParition(
+            @Payload String message,
+            @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) {
+        System.out.println(
+                "Received Messasge: " + message
+                        + "from partition: " + partition);
+    }*/
 
 }
